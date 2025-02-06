@@ -1,0 +1,14 @@
+awscli
+flake8
+isort
+loguru
+mkdocs
+pip
+python-dotenv
+tqdm
+typer
+boto3
+pandas
+joblib
+scikit-learn==1.5.2
+category_encoders
