@@ -104,7 +104,7 @@ The API stores prediction logs in MongoDB. To run locally:
 Real Estate Prediction API
 📍 Endpoint
 
-POST /predict/
+``` POST /predict/ ```
 
 Recebe dados de um imóvel e retorna um preço estimado baseado no modelo de Machine Learning.
 
