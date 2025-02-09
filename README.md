@@ -159,7 +159,9 @@ Exemplo de Resposta:
 }
 ```
 📌 Descrição da Resposta
+
 Campo	    | Tipo	| Descrição
+|-----------|-------|---------------------------------------------
 prediction	| int	| Valor previsto do imóvel baseado no modelo
 
 ⚠️ Possíveis Erros
