@@ -39,18 +39,12 @@ This repository contains a FastAPI-based API to serve a trained machine learning
 git https://github.com/joycesafg/property-friends-real-state-repo.git
 cd property-friends-real-state-repo
 ```
-
-### 2. Set Up and Run the API Locally
-
-#### Using Python (Without Docker)
-
+### 2. Train the model 
+It will generate the .pkl artifact for the application.
 ```bash
-pip install -r requirements.txt
-uvicorn property_friends_real_state.app.app:app --reload
-```
-
-The API will be available at [http://127.0.0.1:8000](http://127.0.0.1:8000).
-
+python train.py
+``` 
+### 3. Set Up and Run the API Locally
 #### Using Docker Compose
 
 ```bash
