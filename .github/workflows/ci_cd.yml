@@ -67,7 +67,7 @@ jobs:
       - name: Build and Tag Docker Compose Package
         run: |
             IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/my-app-compose
-            docker build -t $IMAGE_NAME:latest .
+            docker build --no-cache -t $IMAGE_NAME:latest .
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$(date +%Y%m%d%H%M%S)
   
       - name: Push Docker Compose Package to GHCR
