@@ -101,6 +101,90 @@ The API stores prediction logs in MongoDB. To run locally:
         print(log)
    ```
 
+Real Estate Prediction API
+📍 Endpoint
+
+POST /predict/
+
+Recebe dados de um imóvel e retorna um preço estimado baseado no modelo de Machine Learning.
+
+🔒 Autenticação
+A API requer uma API Key no cabeçalho da requisição:
+
+x-api-key: your_api_key
+
+📝 Request (Entrada)
+Content-Type: application/json
+Exemplo de Body:
+
+{
+  "type": "apartment",
+  "sector": "downtown",
+  "net_usable_area": 75.5,
+  "net_area": 90.0,
+  "n_rooms": 3,
+  "n_bathroom": 2,
+  "latitude": -23.55052,
+  "longitude": -46.633308,
+  "price": 500000
+}
+
+📌 Parâmetros da Entrada
+Campo	Tipo	Obrigatório	Descrição
+type	string	✅ Sim	Tipo do imóvel (ex: "apartment", "house")
+sector	string	✅ Sim	Localização ou setor do imóvel
+net_usable_area	float	✅ Sim	Área útil do imóvel (m²)
+net_area	float	✅ Sim	Área total do imóvel (m²)
+n_rooms	float	✅ Sim	Número de quartos
+n_bathroom	float	✅ Sim	Número de banheiros
+latitude	float	✅ Sim	Latitude da localização do imóvel
+longitude	float	✅ Sim	Longitude da localização do imóvel
+price	float	✅ Sim	Preço de venda do imóvel
+
+📤 Response (Saída)
+✅ 200 OK (Sucesso)
+
+Exemplo de Resposta:
+
+{
+  "prediction": 520000
+}
+
+📌 Descrição da Resposta
+Campo	Tipo	Descrição
+prediction	int	Valor previsto do imóvel baseado no modelo
+
+⚠️ Possíveis Erros
+
+Código	Mensagem	Causa
+400 Bad Request	Input data error: {detalhe}	Algum dado enviado no payload é inválido
+403 Forbidden	Access denied: Invalid API Key	API Key ausente ou incorreta
+500 Internal Server Error	Internal server error: {detalhe}	Erro inesperado no servidor
+
+🚀 Como Testar a API usando python
+
+import requests
+
+url = "http://localhost:8000/predict/"
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_api_key"
+}
+data = {
+    "type": "apartment",
+    "sector": "downtown",
+    "net_usable_area": 75.5,
+    "net_area": 90.0,
+    "n_rooms": 3,
+    "n_bathroom": 2,
+    "latitude": -23.55052,
+    "longitude": -46.633308,
+    "price": 500000
+}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())
+
 ---
 
 **Author:** Joyce Maria do Carmo de Sa
