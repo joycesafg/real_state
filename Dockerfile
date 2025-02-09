@@ -6,5 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY property_friends_real_state/app/ /app
+COPY docker-compose.yml /app/docker-compose.yml  
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
+# Default command to start everything
+CMD ["docker-compose", "-f", "/app/docker-compose.yml", "up"]
