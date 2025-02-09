@@ -3,8 +3,12 @@ name: Train Model & Deploy Locally
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:  # Allows manual trigger
+      - main  # Runs on push to main
+  pull_request:
+    branches:
+      - main  # Runs on PRs to main
+  workflow_dispatch:  # Allows manual triggering  push:
+
 
 jobs:
   train-and-deploy:
