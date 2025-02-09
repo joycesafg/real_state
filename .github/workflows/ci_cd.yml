@@ -1,16 +1,12 @@
-name: Train Model & Deploy Locally
+name: Test and Deploy
 
 on:
   push:
     branches:
-      - main  # Runs on push to main
-  pull_request:
-    branches:
-      - main  # Runs on PRs to main
-
+      - main
 
 jobs:
-  train-and-deploy:
+  train_model:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AKI }}
@@ -81,4 +77,3 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
-
