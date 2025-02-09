@@ -51,28 +51,6 @@ python train.py
 docker-compose up
 ```
 
-## Automated Training and Deployment Workflow (GitHub Actions)
-
-### Overview
-
-1. When pushing to the `main` branch, GitHub Actions executes the `ci_cd.yml` workflow.
-2. The workflow:
-   - Downloads data from S3
-   - Trains the model
-   - Saves the model as `model.pkl`
-   - Packages the API into a Docker image
-   - Pushes the image to GitHub Container Registry (GHCR)
-
-### GitHub Actions Configuration
-
-In the GitHub repository, add the following **secrets**:
-
-- `AKI` (AWS Access Key ID)
-- `SAK` (AWS Secret Access Key)
-- `GHCR_PAT` (Personal Access Token for GHCR authentication)
-
-The workflow (`.github/workflows/ci_cd.yml`) automates this process.
-
 ## Accessing API Logs in MongoDB
 
 The API stores prediction logs in MongoDB. To run locally:
@@ -94,6 +72,28 @@ The API stores prediction logs in MongoDB. To run locally:
     for log in logs:
         print(log)
    ```
+
+## Automated Training and Deployment Workflow (GitHub Actions)
+
+### Overview
+
+1. When pushing to the `master` branch, GitHub Actions executes the `ci_cd.yml` workflow.
+2. The workflow:
+   - Downloads data from S3 if necessary
+   - Trains the model
+   - Saves the model as `model.pkl`
+   - Packages the API into a Docker image
+   - Pushes the image to GitHub Container Registry (GHCR)
+
+### GitHub Actions Configuration
+
+In the GitHub repository, add the following **secrets**:
+
+- `AKI` (AWS Access Key ID)
+- `SAK` (AWS Secret Access Key)
+- `GHCR_PAT` (Personal Access Token for GHCR authentication)
+
+The workflow (`.github/workflows/ci_cd.yml`) automates this process.
 
 # Real Estate Prediction API
 
