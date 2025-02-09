@@ -148,7 +148,7 @@ Exemplo de Body:
 | `longitude`        | float  | ✅ Sim	    | Longitude da localização do imóvel
 | `price`            | float  | ✅ Sim	    | Preço de venda do imóvel
 
-```
+
 📤 Response (Saída)
 ✅ 200 OK (Sucesso)
 
