@@ -165,9 +165,10 @@ prediction	| int	| Valor previsto do imóvel baseado no modelo
 ⚠️ Possíveis Erros
 
 Código	| Mensagem	          | Causa
-400     |Bad Request          | Input data error: {detalhe}	Algum dado enviado no payload é inválido
-403     |Forbidden	          | Access denied: Invalid API Key	API Key ausente ou incorreta
-500     |Internal Server Error|	Internal server error: Erro inesperado no servidor
+|-------|---------------------|-------------------------------------
+|400     |Bad Request          | Input data error: {detalhe}	Algum dado enviado no |payload é inválido
+|403     |Forbidden	          | Access denied: Invalid API Key	API Key ausente ou incorreta
+|500     |Internal Server Error|	Internal server error: Erro inesperado no servidor
 
 🚀 Como Testar a API usando python
 
