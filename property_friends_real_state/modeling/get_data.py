@@ -1,48 +1,82 @@
-import boto3
 import os
+import boto3
 import pandas as pd
 from pathlib import Path
+import typer
 from loguru import logger
+from typing import Dict
 
-# AWS Configuration (Set these using GitHub Secrets)
+# App initialization
+app = typer.Typer()
+
+# AWS Configuration (use environment variables for security)
 AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 S3_BUCKET = "case-property-friends"
-TEST_DATA_PATH = "test.csv"
-TRAIN_DATA_PATH = "train.csv"
 
+# S3 file paths
+S3_FILES = {
+    "test": "test.csv",
+    "train": "train.csv"
+}
+
+# Define project root and local data paths
 PROJ_ROOT = Path(__file__).resolve().parents[2]
-logger.info(f"PROJ_ROOT path is: {PROJ_ROOT}")
+DATA_DIR = PROJ_ROOT / "data/processed"
+DATA_DIR.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
+
+logger.info(f"Project root: {PROJ_ROOT}")
+logger.info(f"Data directory: {DATA_DIR}")
+
+# Initialize S3 client
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_KEY
+)
 
 
+def download_data(s3_key: str, local_path: Path) -> None:
+    """Download file from S3 only if it does not exist locally."""
+    if local_path.exists():
+        logger.info(f"File already exists: {local_path}, skipping download.")
+        return
 
-LOCAL_TEST_PATH = PROJ_ROOT / "data/processed/test.csv"
-LOCAL_TRAIN_PATH = PROJ_ROOT / "data/processed/train.csv"
-
-# Temporary path for GitHub Actions
-
-# Create directories if they don't exist
-LOCAL_TEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-LOCAL_TRAIN_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-
-# Download test dataset from S3
-def download_data(s3_path, local_path):
-    s3 = boto3.client("s3", aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_KEY)
-    s3.download_file(S3_BUCKET, s3_path, local_path)
-    print(f"Test dataset downloaded to {local_path}")
-    
+    try:
+        s3_client.download_file(S3_BUCKET, s3_key, str(local_path))
+        logger.info(f"Downloaded {s3_key} to {local_path}")
+    except Exception as e:
+        logger.error(f"Failed to download {s3_key} from S3: {e}")
 
 
-# Load test data as DataFrame
-def load_data(LOCAL_TEST_PATH):
-    return pd.read_csv(LOCAL_TEST_PATH)
+def load_data(file_path: Path) -> pd.DataFrame:
+    """Load CSV data into a pandas DataFrame."""
+    try:
+        return pd.read_csv(file_path)
+    except Exception as e:
+        logger.error(f"Error loading {file_path}: {e}")
+        return None
+
+
+# Main function
+@app.command()
+def main(
+    test_path: Path = DATA_DIR / "test.csv",
+    train_path: Path = DATA_DIR / "train.csv",
+) -> None:
+    """Download and load the train and test datasets."""
+    # Download and load datasets
+    datasets: Dict[str, pd.DataFrame] = {}
+    for name, s3_key in S3_FILES.items():
+        local_path = DATA_DIR / s3_key
+        download_data(s3_key, local_path)
+        datasets[name] = load_data(local_path)
+
+    # Print sample data for the test set
+    if datasets.get("test") is not None:
+        logger.info("Test Data Loaded Successfully!")
+        print(datasets["test"].head())
+
 
 if __name__ == "__main__":
-    download_data(TEST_DATA_PATH, LOCAL_TEST_PATH)
-    download_data(TRAIN_DATA_PATH, LOCAL_TRAIN_PATH)
-    test_df = load_data(LOCAL_TEST_PATH)
-    trin_df = load_data(LOCAL_TRAIN_PATH)
-    print("Test Data Loaded Successfully!")
-    print(test_df.head())  # Preview data
-    
+    app()
