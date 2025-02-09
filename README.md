@@ -101,20 +101,25 @@ The API stores prediction logs in MongoDB. To run locally:
         print(log)
    ```
 
-Real Estate Prediction API
+# Real Estate Prediction API
+
 📍 Endpoint
 
-``` POST /predict/ ```
+```
+ POST /predict/ 
+```
 
 Recebe dados de um imóvel e retorna um preço estimado baseado no modelo de Machine Learning.
 
 🔒 Autenticação
 A API requer uma API Key no cabeçalho da requisição:
-
+```
 x-api-key: your_api_key
+```
 
 📝 Request (Entrada)
 Content-Type: application/json
+```
 Exemplo de Body:
 
 {
@@ -128,8 +133,9 @@ Exemplo de Body:
   "longitude": -46.633308,
   "price": 500000
 }
-
+```
 📌 Parâmetros da Entrada
+
 Campo	Tipo	Obrigatório	Descrição
 type	string	✅ Sim	Tipo do imóvel (ex: "apartment", "house")
 sector	string	✅ Sim	Localização ou setor do imóvel
