@@ -8,5 +8,7 @@ RUN apt-get update && apt-get install -y docker-compose
 COPY property_friends_real_state/app/ .
 COPY docker-compose.yml .
 
+RUN ls -la /app
+
 # Default command to start everything
 CMD ["docker-compose", "-f", "/app/docker-compose.yml", "up"]
