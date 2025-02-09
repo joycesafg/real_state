@@ -156,7 +156,7 @@ Exemplo de Resposta:
 
 Campo	    | Tipo	| Descrição
 |-----------|-------|---------------------------------------------
-prediction	| int	| Valor previsto do imóvel baseado no modelo
+prediction	| int	| Valor previsto do m² do imóvel baseado no modelo
 
 ⚠️ Possíveis Erros
 
